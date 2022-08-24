@@ -14,7 +14,7 @@
     "@vuepress/plugin-back-to-top": "^1.8.2",
     "lint-staged": "^11.1.2",
     "vuepress": "^1.8.2",
-    "vuepress-plugin-mermaidjs": "^1.8.1"
+    "vuepress-plugin-mermaidjs": "^1.9.1"
   },
   "dependencies": {
     "@kidonng/vuepress-plugin-contributors": "^0.3.0",
