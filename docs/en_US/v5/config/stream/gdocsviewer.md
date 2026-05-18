@@ -56,6 +56,10 @@ This protocol has not been fully tested prior to release.
           "textUrl": "https://drive.google.com/viewerng/text",
           "originUrl": "http://{rand}-0-0-0-0.sslip.io:8080/",
           "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+          "requestHeaders": {
+            "Accept-Language": "en-US,en;q=0.9",
+            "Referer": "https://drive.google.com/"
+          },
           "maxRequestBytes": 872,
           "originUrlReplacementRules": [
             {
@@ -145,6 +149,12 @@ If the server uses the default `pathPrefix`, the client `originUrl` should inclu
 
 (Client only) `User-Agent` sent to Google Docs Viewer. You should use a real browser user agent to avoid google's blocking.
 
+> `requestHeaders`: \{ \[key: string\]: string \}
+
+(Client only) Extra HTTP request headers sent to `viewerUrl` and `textUrl`. This can be used to set browser-like headers such as `Accept-Language` or `Referer`. (v5.51.2+)
+
+If `requestHeaders` contains `User-Agent`, it overrides `userAgent`. If it contains `Host`, it is handled as the HTTP Host header and overrides `viewerHostHeader`. These headers are sent only from the client to Google Docs Viewer; they do not control the headers that Google Docs Viewer sends to `originUrl`.
+
 > `h2PoolSize`: number
 
 (Client only) HTTP/2 connection pool size. The default is determined by the underlying HTTP round tripper.
@@ -201,5 +211,6 @@ The same rule generates one value per request and replaces all matching placehol
 * The outer client outbound target is normally an address that can reach Google services, used with TLS `serverName`.
 * `sharedKey` is recommended; without it, the origin path and response body are not protected by transport encryption.
 * This transport performs multiple HTTP requests and its performance and reliability depend on Google Docs Viewer behavior.
+* The direct `gdocsviewer` transport uses a request assembler with idle polling backoff and server-side long polling. Empty polls may wait before returning so idle connections do not continuously consume Google Docs Viewer quota.
 
 (This document is generated with assist from LLM, and reviewed by author.)
